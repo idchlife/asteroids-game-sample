@@ -1,5 +1,7 @@
 ## Asteroids Game Sample
 
+NOTE: You can check out threading version in `threading` branch.
+
 This sample utilizes separately built game core with simple ECS system and bare-bones physics world.
 
 Game Core can run everywhere C# is supported via .dll inclusion.
