@@ -56,7 +56,11 @@ namespace AsteroidsCore.World {
       );
     }
 
-    public void EnableThreads() => threadsEnabled = true;
+    public void EnableThreads() {
+      threadsEnabled = true;
+      physicsWorld.EnableThreads();
+      commandExecutor.EnableThreads();
+    }
 
     public void Tick() {
       if (!Active) return;
@@ -75,25 +79,10 @@ namespace AsteroidsCore.World {
 
     protected virtual void ProcessEntitiesInTick() {
       if (threadsEnabled) {
-        Task[] tasks = new Task[entityPool.Count];
-
-        int i = 0;
-
-        foreach (var entity in entityPool) {
-          if (!entity.MarkedForDestruction) {
-
-            tasks[i] = Task.Run(() => entity.OnUpdate());
-          }
-
-          i++;
-        }
-
-        Task.WaitAll(tasks);
+        Parallel.ForEach(entityPool.Entities.Values, EntityTick);
       } else {
-        foreach (var entity in entityPool) {
-          if (!entity.MarkedForDestruction) {
-            entity.OnUpdate();
-          }
+        foreach (var entity in entityPool.Entities.Values) {
+          EntityTick(entity);
         }
       }
     }
@@ -103,9 +92,9 @@ namespace AsteroidsCore.World {
     }
 
     protected void EntityTick(Entity entity) {
-    }
-
-    protected void PhysicsWorldEntityTick(Entity entity) {
+      if (!entity.MarkedForDestruction) {
+        entity.OnUpdate();
+      }
     }
 
     public void AddEntity(Entity entity) {
@@ -113,7 +102,7 @@ namespace AsteroidsCore.World {
     }
 
     public void RemoveAllEntities(bool immediately = false, bool noNewCommands = false) {
-      foreach (var entity in entityPool) {
+      foreach (var entity in entityPool.Entities.Values) {
         commands.AddCommand(new DestroyEntityCommand(entity.Id));
       }
 

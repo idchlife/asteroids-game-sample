@@ -17,6 +17,7 @@ using AsteroidsCore.World.Events.Entities;
 using AsteroidsCore.Worlds.Events.Entities;
 using AsteroidsCore.Worlds.Ids;
 using System;
+using System.Threading;
 
 namespace AsteroidsCore.Game {
   [Flags]
@@ -40,11 +41,6 @@ namespace AsteroidsCore.Game {
     public int Score {
       get => _score;
 
-      set {
-        _score = value;
-
-        Events.EmitScoreChanged(value);
-      }
     }
 
     public GameControls Controls { get; }
@@ -100,7 +96,7 @@ namespace AsteroidsCore.Game {
       CreateAsteroid();
       CreateAsteroid();
 
-      Score = 0;
+      Interlocked.Exchange(ref _score, 0);
     }
 
     public void CreateStarterGameEntities() {
@@ -331,12 +327,18 @@ namespace AsteroidsCore.Game {
       // Self unsubscribe. Uh-uh
       obj.Destroyed -= HandlerGameObjectDestroyed;
 
+
+      ;
+
+
       if (shipSystem != null) {
-        if (obj is FlyingSaucer) Score += 10;
+        if (obj is FlyingSaucer) Interlocked.Add(ref _score, 10);
 
-        if (obj is Asteroid) Score += 5;
+        if (obj is Asteroid) Interlocked.Add(ref _score, 5);
 
-        if (obj is AsteroidShard) Score += 2;
+        if (obj is AsteroidShard) Interlocked.Add(ref _score, 2);
+
+        Events.EmitScoreChanged(Score);
       }
 
       if (obj is Ship) {

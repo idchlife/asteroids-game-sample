@@ -122,6 +122,50 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &9028244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9028246}
+  - component: {fileID: 9028245}
+  m_Layer: 0
+  m_Name: UnityMainThreadExecutor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &9028245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9028244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038c11ff38d63aa44b81d78bc64280c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &9028246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9028244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 760.2066, y: 409.46246, z: -4.762807}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &12922647
 GameObject:
   m_ObjectHideFlags: 0
@@ -1546,6 +1590,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6f43a4e874250a4e97ff461a784a57b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MainThreadExecutor: {fileID: 9028245}
   ShipRendererPrefab: {fileID: 2601916280207319774, guid: 648759742b6e90b48a80b1f5004e9efe, type: 3}
   ProjectileRendererPrefab: {fileID: 4267271839274677835, guid: c9afd8d123078a146a5c33d1e13224f4, type: 3}
   LaserRendererPrefab: {fileID: 3126070076908225140, guid: 13f14512b522d464bb8cde05e0d22405, type: 3}
@@ -1939,3 +1984,4 @@ SceneRoots:
   - {fileID: 1995085157}
   - {fileID: 1546338686}
   - {fileID: 477768712}
+  - {fileID: 9028246}

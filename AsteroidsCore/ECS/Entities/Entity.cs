@@ -105,7 +105,7 @@ namespace AsteroidsCore.ECS.Entities {
     }
 
     public T? GetComponentThatImplements<T>() where T : Component, new() {
-      foreach (var component in components) {
+      foreach (var component in components.Components.Values) {
         if (component is T) return (T) component;
       }
 

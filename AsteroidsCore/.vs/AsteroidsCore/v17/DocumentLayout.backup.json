@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|c:\\users\\idchl\\www\\work\\asteroids-test\\asteroidscore\\physics\\worlds\\physicsworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|solutionrelative:physics\\worlds\\physicsworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|c:\\users\\idchl\\www\\work\\asteroids-test\\asteroidscore\\game\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|solutionrelative:game\\game.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|c:\\users\\idchl\\www\\work\\asteroids-test\\asteroidscore\\worlds\\commands\\executors\\commandexecutor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|solutionrelative:worlds\\commands\\executors\\commandexecutor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|c:\\users\\idchl\\www\\work\\asteroids-test\\asteroidscore\\worlds\\pools\\entitypool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|solutionrelative:worlds\\pools\\entitypool.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|c:\\users\\idchl\\www\\work\\asteroids-test\\asteroidscore\\worlds\\gameworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{872C9731-EB6C-46F2-9ACA-5BAC14FB7142}|AsteroidsCore.csproj|solutionrelative:worlds\\gameworld.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,32 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "PhysicsWorld.cs",
-              "DocumentMoniker": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Physics\\Worlds\\PhysicsWorld.cs",
-              "RelativeDocumentMoniker": "Physics\\Worlds\\PhysicsWorld.cs",
-              "ToolTip": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Physics\\Worlds\\PhysicsWorld.cs",
-              "RelativeToolTip": "Physics\\Worlds\\PhysicsWorld.cs",
-              "ViewState": "AgIAAJMAAAAAAAAAAAAiwLYAAAAYAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "EntityPool.cs",
+              "DocumentMoniker": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Worlds\\Pools\\EntityPool.cs",
+              "RelativeDocumentMoniker": "Worlds\\Pools\\EntityPool.cs",
+              "ToolTip": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Worlds\\Pools\\EntityPool.cs",
+              "RelativeToolTip": "Worlds\\Pools\\EntityPool.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAuwA4AAAAjAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T13:18:47.137Z",
+              "WhenOpened": "2024-08-21T17:22:22.215Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Game.cs",
               "DocumentMoniker": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Game\\Game.cs",
               "RelativeDocumentMoniker": "Game\\Game.cs",
               "ToolTip": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Game\\Game.cs",
               "RelativeToolTip": "Game\\Game.cs",
-              "ViewState": "AgIAAFAAAAAAAAAAAAA5wGYAAAAPAAAAAAAAAA==",
+              "ViewState": "AgIAAFYAAAAAAAAAAADgv2QAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T11:02:57.612Z",
+              "WhenOpened": "2024-08-21T17:16:30.773Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "GameWorld.cs",
+              "DocumentMoniker": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Worlds\\GameWorld.cs",
+              "RelativeDocumentMoniker": "Worlds\\GameWorld.cs",
+              "ToolTip": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Worlds\\GameWorld.cs",
+              "RelativeToolTip": "Worlds\\GameWorld.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAADgv3QAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-21T17:15:56.582Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "CommandExecutor.cs",
+              "DocumentMoniker": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Worlds\\Commands\\Executors\\CommandExecutor.cs",
+              "RelativeDocumentMoniker": "Worlds\\Commands\\Executors\\CommandExecutor.cs",
+              "ToolTip": "C:\\Users\\idchl\\www\\work\\asteroids-test\\AsteroidsCore\\Worlds\\Commands\\Executors\\CommandExecutor.cs",
+              "RelativeToolTip": "Worlds\\Commands\\Executors\\CommandExecutor.cs",
+              "ViewState": "AgIAAE8AAAAAAAAAAAArwF8AAAAgAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-08-21T17:00:42.817Z",
               "EditorCaption": ""
             },
             {

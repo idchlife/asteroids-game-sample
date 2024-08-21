@@ -5,6 +5,7 @@ using AsteroidsCore.World.Tasks;
 using AsteroidsCore.Worlds.Ids;
 using AsteroidsCore.Worlds.Pools;
 using System;
+using System.Threading.Tasks;
 
 namespace AsteroidsCore.Worlds.Commands.Executors {
   /// <summary>
@@ -24,6 +25,8 @@ namespace AsteroidsCore.Worlds.Commands.Executors {
 
     private GameWorldEvents gameWorldEvents { get; }
 
+    private bool threadsEnabled { get; set; } = false;
+
     public CommandExecutor(
       Commands commands,
       EntityPool entityPool,
@@ -38,14 +41,32 @@ namespace AsteroidsCore.Worlds.Commands.Executors {
       this.gameWorldEvents = gameWorldEvents;
     }
 
+    public void EnableThreads() => threadsEnabled = true;
+
     public void ExecuteCommands(Commands commands) {
       // We need to switch enqueue to temp because after processing commands there is a chance that
       // new commands will be spawned and we need to process current commands first.
       commands.RouteToTemp();
 
-      while (commands.Size > 0) {
-        ExecuteCommand(commands.RetrieveAndRemoveCommand());
+      if (threadsEnabled) {
+        Parallel.For(
+          0,
+          commands.Size,
+          (i) => {
+            commands.TryRetrieveAndRemoveCommand(out var command);
+
+            if (command != null) ExecuteCommand(command);
+          }
+        );
+      } else {
+        while (commands.Size > 0) {
+          var command = commands.RetrieveAndRemoveCommand();
+          if (command != null) ExecuteCommand(command);
+        }
       }
+      
+
+      
 
       // There can be commands gathered after processing another commands
       // E.g. in OnCreate method entities or components were added
@@ -83,7 +104,7 @@ namespace AsteroidsCore.Worlds.Commands.Executors {
       var entity = entityPool.FindById(command.EntityId);
 
       if (entity == null) {
-        logger.LogInfo($"Tried destroying entity by id {command.EntityId} but failed. Weird.");
+        logger.LogInfo($"Tried destroying entity by id {command.EntityId} but it was null. Weird.");
         return;
       }
 

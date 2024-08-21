@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class AsteroidsCoreGame : MonoBehaviour {
+  public UnityMainThreadExecutor MainThreadExecutor;
   public GameObject ShipRendererPrefab;
   public GameObject ProjectileRendererPrefab;
   public GameObject LaserRendererPrefab;
@@ -48,6 +49,8 @@ public class AsteroidsCoreGame : MonoBehaviour {
     AttachGameEvents();
 
     game.RestartGame();
+
+    game.EnableThreads();
   }
 
   private void AttachGameEvents() {
@@ -91,50 +94,59 @@ public class AsteroidsCoreGame : MonoBehaviour {
   private void HandlerRestartGameButtonClicked() {
     game.RestartGame();
 
-    GameOverPanel.SetActive(false);
+    MainThreadExecutor.AddActionToQueue(() => {
+      GameOverPanel.SetActive(false);
+    });
   }
 
   private void HandlerGameOver(object sender, EventArgs args) {
-    GameOverScoreLabel.text = ScoreLabel.text;
-    ship = null;
-    GameOverPanel.SetActive(true);
+    MainThreadExecutor.AddActionToQueue(() => {
+      GameOverScoreLabel.text = ScoreLabel.text;
+      ship = null;
+      GameOverPanel.SetActive(true);
+    });
   }
 
   private void HandlerScoreChange(object sender, ScoreChangedEvent args) {
-    ScoreLabel.text = $"Score: {args.Score}";
+    MainThreadExecutor.AddActionToQueue(() => {
+      ScoreLabel.text = $"Score: {args.Score}";
+    });
   }
 
   private void HandlerGameObjectCreated(object sender, GameObjectCreatedEvent args) {
-    GameObject prefab;
+    MainThreadExecutor.AddActionToQueue(() => {
+      GameObject prefab;
 
-    if (args.GameObject is Ship) {
-      prefab = ShipRendererPrefab;
+      if (args.GameObject is Ship) {
+        prefab = ShipRendererPrefab;
 
-      ship = (Ship) args.GameObject;
-    } else if (args.GameObject is Projectile) {
-      prefab = ProjectileRendererPrefab;
-    } else if (args.GameObject is FlyingSaucer) {
-      prefab = FlyingSaucerRendererPrefab;
-    } else if (args.GameObject is Asteroid) {
-      prefab = AsteroidRendererPrefab;
-    } else if (args.GameObject is AsteroidShard) {
-      prefab = AsteroidShardRendererPrefab;
-    } else if (args.GameObject is Laser) {
-      prefab = LaserRendererPrefab;
-    } else {
-      return;
-    }
+        ship = (Ship) args.GameObject;
+      } else if (args.GameObject is Projectile) {
+        prefab = ProjectileRendererPrefab;
+      } else if (args.GameObject is FlyingSaucer) {
+        prefab = FlyingSaucerRendererPrefab;
+      } else if (args.GameObject is Asteroid) {
+        prefab = AsteroidRendererPrefab;
+      } else if (args.GameObject is AsteroidShard) {
+        prefab = AsteroidShardRendererPrefab;
+      } else if (args.GameObject is Laser) {
+        prefab = LaserRendererPrefab;
+      } else {
+        return;
+      }
 
-    var obj = Instantiate(prefab);
-    var renderer = obj.AddComponent<AsteroidsGameObjectRendererComponent>();
-    renderer.SetAsteroidsGameObject(args.GameObject);
+      var obj = Instantiate(prefab);
+      var renderer = obj.AddComponent<AsteroidsGameObjectRendererComponent>();
+      renderer.SetAsteroidsGameObject(args.GameObject);
+      renderer.SetMainThreadExecutor(MainThreadExecutor);
 
-    if (args.GameObject is Asteroid || args.GameObject is AsteroidShard || args.GameObject is FlyingSaucer) {
-      renderer.VisualRotationEnabled = false;
-    }
+      if (args.GameObject is Asteroid || args.GameObject is AsteroidShard || args.GameObject is FlyingSaucer) {
+        renderer.VisualRotationEnabled = false;
+      }
 
-    // After setting asteroids game object we set parent to avoid pos jumping
-    obj.transform.SetParent(transform);
+      // After setting asteroids game object we set parent to avoid pos jumping
+      obj.transform.SetParent(transform);
+    });
   }
 
   // private void HandlerProjectileCreated(object sender, Projectile)

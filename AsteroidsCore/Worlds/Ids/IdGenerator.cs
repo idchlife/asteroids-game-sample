@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading;
 
 namespace AsteroidsCore.Worlds.Ids {
   public class IdGenerator : IIdGenerator {
     private int ids = 0;
 
-    public int GetNextId() => ++ids;
+    public int GetNextId() {
+      return Interlocked.Increment(ref ids);
+    }
   }
 }

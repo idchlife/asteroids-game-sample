@@ -6,8 +6,10 @@ using AsteroidsCore.World.Events;
 using AsteroidsCore.World.Events.Entities;
 using AsteroidsCore.Worlds.Events.Entities;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace AsteroidsCore.Physics.Worlds {
   public class PhysicsWorld : IDisposable {
@@ -15,9 +17,11 @@ namespace AsteroidsCore.Physics.Worlds {
 
     private GameWorldEvents gameWorldEvents { get; set; }
 
-    private Dictionary<string, bool> collidedEntityIds = new();
+    private ConcurrentDictionary<string, bool> collidedEntityIds = new();
 
     private ILogger logger {  get; set; }
+
+    private bool threadsEnabled { get; set; } = false;
 
     public PhysicsWorld(
       GameWorldEvents gameWorldEvents,
@@ -28,6 +32,8 @@ namespace AsteroidsCore.Physics.Worlds {
 
       AttachGameWorldEvents();
     }
+
+    public bool EnableThreads() => threadsEnabled = true;
 
     public void AddPhysicsSystem(PhysicsSystem physicsSystem) {
       physicsSystemsStorage.Add(physicsSystem);
@@ -70,7 +76,7 @@ namespace AsteroidsCore.Physics.Worlds {
       var key = CreateCollidedEntitiesKey(entityIdA, entityIdB);
 
       if (!collidedEntityIds.ContainsKey(key)) {
-        collidedEntityIds.Add(key, true);
+        collidedEntityIds.TryAdd(key, true);
       }
     }
 
@@ -92,31 +98,39 @@ namespace AsteroidsCore.Physics.Worlds {
       
 
     private void DetectCollidingPhysicsSystems() {
-      // This is horrendous but I don't have time rn to create proper
+      // This is onboxious but I don't have time rn to create proper
       // flags based collision matrix and stuff. Hopefully it works
       // fine with not so many physics objects
       // Best will be to use some physics engine in PhysicsWorld to actually
       // have performant implementation :) But for the sake of
       // simplicity...
-      foreach (var s1 in physicsSystemsStorage) {
-        foreach (var s2 in physicsSystemsStorage) {
-          var c1 = s1.GetColliderComponent();
-          var c2 = s2.GetColliderComponent();
+      if (threadsEnabled) {
+        Parallel.ForEach(physicsSystemsStorage, DetectCollidingPhysicsSystemsForSystem);
+      } else {
+        foreach (var system in physicsSystemsStorage) {
+          DetectCollidingPhysicsSystemsForSystem(system);
+        }
+      }
+    }
 
-          if (c1 == null || c2 == null) continue;
+    private void DetectCollidingPhysicsSystemsForSystem(PhysicsSystem s1) {
+      foreach (var s2 in physicsSystemsStorage) {
+        var c1 = s1.GetColliderComponent();
+        var c2 = s2.GetColliderComponent();
 
-          if (c1 is CircleColliderComponent collider1 && c2 is CircleColliderComponent collider2) {
-            if (DoCircleCollidersCollide(collider1, collider2)) {
-              var entity1Id = s1.GetEntity().Id;
-              var entity2Id = s2.GetEntity().Id;
-              
-              // This actually wont happen in this game but oh well
-              if (entity1Id == entity2Id) continue;
+        if (c1 == null || c2 == null) continue;
 
-              if (!DidEntitiesCollide(entity1Id, entity2Id)) {
-                AddCollidedEntities(entity1Id, entity2Id);
-                NotifyPhysicsSystemAboutCollisionStart(s1, s2);
-              }
+        if (c1 is CircleColliderComponent collider1 && c2 is CircleColliderComponent collider2) {
+          if (DoCircleCollidersCollide(collider1, collider2)) {
+            var entity1Id = s1.GetEntity().Id;
+            var entity2Id = s2.GetEntity().Id;
+            
+            // This actually wont happen in this game but oh well
+            if (entity1Id == entity2Id) continue;
+
+            if (!DidEntitiesCollide(entity1Id, entity2Id)) {
+              AddCollidedEntities(entity1Id, entity2Id);
+              NotifyPhysicsSystemAboutCollisionStart(s1, s2);
             }
           }
         }

@@ -7,6 +7,10 @@ using System.Text;
 
 namespace AsteroidsCore.Game.Events {
   public class AsteroidGameEvents {
+    private object lockObject { get; } = new object();
+
+    private object lockObjectCreated { get; } = new object();
+
     public event EventHandler<GameObjectCreatedEvent>? GameObjectCreated;
 
     public event EventHandler? GameStarted;
@@ -15,13 +19,28 @@ namespace AsteroidsCore.Game.Events {
 
     public event EventHandler<ScoreChangedEvent>? ScoreChanged;
 
-    public void EmitGameStarted() => GameStarted?.Invoke(this, null);
+    public void EmitGameStarted() {
+      lock (lockObject) {
+        GameStarted?.Invoke(this, null);
+      }
+    }
 
-    public void EmitGameOver() => GameOver?.Invoke(this, null);
+    public void EmitGameOver() {
+      lock (lockObject) {
+        GameOver?.Invoke(this, null);
+      }
+    }
 
-    public void EmitGameObjectCreated(AsteroidsGameObject obj) =>
-      GameObjectCreated?.Invoke(this, new GameObjectCreatedEvent(obj));
+    public void EmitGameObjectCreated(AsteroidsGameObject obj) {
+      lock (lockObjectCreated) {
+        GameObjectCreated?.Invoke(this, new GameObjectCreatedEvent(obj));
+      }
+    }
 
-    public void EmitScoreChanged(int score) => ScoreChanged?.Invoke(this, new ScoreChangedEvent(score));
+    public void EmitScoreChanged(int score) {
+      lock (lockObject) {
+        ScoreChanged?.Invoke(this, new ScoreChangedEvent(score));
+      }
+    }
   }
 }

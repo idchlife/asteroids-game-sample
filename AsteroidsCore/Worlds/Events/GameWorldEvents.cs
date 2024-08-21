@@ -5,16 +5,22 @@ using System;
 
 namespace AsteroidsCore.World.Events {
   public class GameWorldEvents {
+    private object lockObject { get; } = new object();
+
     public event EventHandler<EntityCreatedEvent>? EntityCreated;
 
     public event EventHandler<EntityDestroyedEvent>? EntityDestroyed;
 
     public void EmitEntityDestroyed(int entityId) {
-      EntityDestroyed?.Invoke(this, new EntityDestroyedEvent(entityId));
+      lock (lockObject) {
+        EntityDestroyed?.Invoke(this, new EntityDestroyedEvent(entityId));
+      }
     }
 
     public void EmitEntityCreated(Entity entity) {
-      EntityCreated?.Invoke(this, new EntityCreatedEvent(entity));
+      lock (lockObject) {
+        EntityCreated?.Invoke(this, new EntityCreatedEvent(entity));
+      }
     }
   }
 }

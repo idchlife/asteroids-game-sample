@@ -6,16 +6,21 @@ using UnityEngine;
 public class AsteroidsGameObjectRendererComponent : MonoBehaviour {
   private AsteroidsGameObject obj { get; set; }
 
+  private UnityMainThreadExecutor mainThreadExecutor;
+
   public bool VisualRotationEnabled { get; set; } = true;
+
+  public void SetMainThreadExecutor(UnityMainThreadExecutor executor) => mainThreadExecutor = executor;
 
   // Start is called before the first frame update
   void Start() {
     obj.Destroyed += (s, e) => {
-      Destroy(gameObject);
+      mainThreadExecutor.AddActionToQueue(() => {
+        Destroy(gameObject);
+      });
     };
 
     UpdatePosition();
-
   }
 
   // Update is called once per frame

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
@@ -15,9 +16,9 @@ namespace AsteroidsCore.Worlds.Commands {
 
     private CommandsDestination destination = CommandsDestination.Main;
 
-    private Queue<Command> mainQueue = new Queue<Command>();
+    private ConcurrentQueue<Command> mainQueue = new();
 
-    private Queue<Command> tempQueue = new();
+    private ConcurrentQueue<Command> tempQueue = new();
 
     public void RouteToTemp() {
       destination = CommandsDestination.Temp;
@@ -40,11 +41,30 @@ namespace AsteroidsCore.Worlds.Commands {
         // Going straight to /dev/null
       }
     }
+    
+    // Concurrent variant
+    public bool TryRetrieveAndRemoveCommand(out Command? command) {
+      if (mainQueue.TryDequeue(out var c)) {
+        command = c;
+        return true;
+      } else {
+        command = null;
+        return false;
+      }
+    }
 
-    public Command RetrieveAndRemoveCommand() => mainQueue.Dequeue();
+    public Command? RetrieveAndRemoveCommand() {
+      if (mainQueue.TryDequeue(out var command)) return command;
+
+      return null;
+    }
 
     public void TransferAllFromTempToMain() {
-      while (tempQueue.Count > 0) mainQueue.Enqueue(tempQueue.Dequeue());
+      while (tempQueue.Count > 0) {
+        if (!tempQueue.TryDequeue(out var command)) {
+          mainQueue.Enqueue(command);
+        }
+      }
     } 
   }
 }
