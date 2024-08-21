@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <OutputType>Library</OutputType>
+    <BaseOutputPath>C:\Users\idchl\www\work\asteroids-test\AsteroidsClient\AsteroidsClient\Assets\Vendor\AsteroidsCore</BaseOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Loops\Default\" />
+    <Folder Include="Loops\Pools\" />
+    <Folder Include="Worlds\State\" />
+  </ItemGroup>
+</Project>
