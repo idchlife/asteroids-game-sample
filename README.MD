@@ -1,4 +1,7 @@
-## Asteroids Game Sample
+## Asteroids Game Sample (THREADING VERSION)
+
+NOTE: This version uses threading in C# and Queue for Main UI thread actions in Unity.
+It's somewhat stable.
 
 This sample utilizes separately built game core with simple ECS system and bare-bones physics world.
 
